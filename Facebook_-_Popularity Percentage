@@ -1,0 +1,25 @@
+/* 
+Find the popularity percentage for each user on Facebook. 
+The popularity percentage is defined as the total number of friends the user has divided by the total number of users on the platform, 
+then converted into a percentage by multiplying by 100.
+Output each user along with their popularity percentage. 
+Order records in ascending order by user id.
+The 'user1' and 'user2' column are pairs of friends.
+*/
+
+-- Dataset Name: facebook_friends
+-- user1 | user2
+
+WITH a AS (
+SELECT user1 as id, 
+  user2 as friend 
+FROM facebook_friends
+UNION
+SELECT user2 as id, 
+  user1 as friend 
+FROM facebook_friends)
+
+SELECT id, 
+  COUNT(DISTINCT friend)*100.0/(SELECT COUNT(DISTINCT id) FROM a) AS percent
+FROM a
+GROUP BY id
